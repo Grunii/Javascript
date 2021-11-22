@@ -13,7 +13,7 @@ function paus(){
     ispaused=true;
      }
      function spela(){
-   ispaused=false;
+  ispaused=false;
     }
      
 function random(min, max) {
@@ -37,6 +37,8 @@ function Ball(x, y, velX, velY, color, size,) {
     
   }
   Ball.prototype.update = function() {
+
+    if(ispaused){ this.velY=0,this.velX=0}
     if ((this.x + this.size) >= width) {
       this.velX = -(this.velX);
     }
@@ -52,7 +54,8 @@ function Ball(x, y, velX, velY, color, size,) {
     if ((this.y - this.size) <= 0) {
       this.velY = -(this.velY);
     }
-    if(ispaused){ this.velY=0,this.velX=0}
+    
+    
     
        
   
@@ -64,7 +67,7 @@ function Ball(x, y, velX, velY, color, size,) {
       
   let balls = [];
 
-while (balls.length < 25) {
+while (balls.length < 26) {
   let size = random(10,20);
   let ball = new Ball(
     // ball position always drawn at least one ball width
@@ -78,46 +81,48 @@ while (balls.length < 25) {
  );
 
   balls.push(ball);
-  function add(){
+   function add(){
     let size = random(10,20);
-    let ball = new Ball(
-      // ball position always drawn at least one ball width
-      // away from the edge of the canvas, to avoid drawing errors
-      random(0 + size,width - size),
-      random(0 + size,height - size),
-      random(-7,7),
-      random(-7,7),
-      'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
-      size
-   );
+  let ball = new Ball(
+    // ball position always drawn at least one ball width
+    // away from the edge of the canvas, to avoid drawing errors
+    random(0 + size,width - size),
+    random(0 + size,height - size),
+    random(-7,7),
+    random(-7,7),
+    'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
+    size
+ );
+
+  balls.push(ball);
   
-    balls.push(ball);
+     }
   }
   
-    
-  }
-      
+  
+
+   
   
   
- 
+ let i=0
 
 
 function loop() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
     ctx.fillRect(0, 0, width, height);
   
-    for (let i = 0; i < balls.length; i++) {
+    for (i = 0; i < balls.length; i++) {
       balls[i].draw();
       balls[i].update();
+      document.getElementById("demo").innerText=i
     }
    
     requestAnimationFrame(loop);
   }
- 
+
  loop();
- 
+                 
 
     
   
   
- 
