@@ -6,8 +6,7 @@ const height = canvas.height = window.innerHeight;
 
 // function to generate random number
 let ispaused =false;
-
-
+let numberOfBalls = 25;
 
 function paus(){
     ispaused=true;
@@ -21,13 +20,14 @@ function random(min, max) {
   return num;
 }
 function Ball(x, y, velX, velY, color, size,) {
-    // if(ispaused){velX=0,velY=0}
     this.x = x;
     this.y = y;
     this.velX = velX 
     this.velY = velY 
     this.color = color;
     this.size = size;
+    this.prevVelX = random(-7,7);
+    this.prevVelY = random(-7,7);
   }
   Ball.prototype.draw = function() {
     ctx.beginPath();
@@ -36,9 +36,20 @@ function Ball(x, y, velX, velY, color, size,) {
     ctx.fill();
     
   }
-  Ball.prototype.update = function() {
+  Ball.prototype.update = function() { 
+    if(ispaused){
+      if(this.velX!=0 && this.VelY!=0){
+        this.prevVelX = this.velX;
+        this.prevVelY = this.velY;
+      }
+      this.velX=0
+      this.velY=0
+    }
+    else if(!ispaused && (this.velX==0 && this.velY==0)){
+      this.velX = this.prevVelX;
+      this.velY = this.prevVelY;
+    }
 
-    if(ispaused){ this.velY=0,this.velX=0}
     if ((this.x + this.size) >= width) {
       this.velX = -(this.velX);
     }
@@ -54,12 +65,7 @@ function Ball(x, y, velX, velY, color, size,) {
     if ((this.y - this.size) <= 0) {
       this.velY = -(this.velY);
     }
-    
-    
-    
-       
-  
-  
+     
     this.x += this.velX;
     this.y += this.velY;
   }
@@ -67,15 +73,15 @@ function Ball(x, y, velX, velY, color, size,) {
       
   let balls = [];
 
-while (balls.length < 26) {
+while (balls.length < numberOfBalls) {
   let size = random(10,20);
   let ball = new Ball(
     // ball position always drawn at least one ball width
     // away from the edge of the canvas, to avoid drawing errors
     random(0 + size,width - size),
     random(0 + size,height - size),
-    random(-7,7),
-    random(-7,7),
+    ispaused ? 0 : random(-7,7),
+    ispaused ? 0 : random(-7,7),
     'rgb(' + random(0,255) + ',' + random(0,255) + ',' + random(0,255) +')',
     size
  );
@@ -98,12 +104,7 @@ while (balls.length < 26) {
   
      }
   }
-  
-  
 
-   
-  
-  
  let i=0
 
 
@@ -116,13 +117,7 @@ function loop() {
       balls[i].update();
       document.getElementById("demo").innerText=i
     }
-   
     requestAnimationFrame(loop);
   }
 
  loop();
-                 
-
-    
-  
-  
