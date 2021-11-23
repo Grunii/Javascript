@@ -105,6 +105,15 @@ while (balls.length < numberOfBalls) {
      }
   }
 
+  function reduce(){
+   
+    location.reload();
+     
+      }
+    
+    
+  
+
  let i=0
 
 
